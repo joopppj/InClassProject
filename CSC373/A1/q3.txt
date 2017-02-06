@@ -1,0 +1,48 @@
+Question 3
+
+(a)
+Sort jobs by decreasing profits. Process jobs in this order. Schedule each job at the latest available time before the deadline. If no such time is available, do not schedule the job at all.
+
+(b)
+Schedule(D, P, n)
+  sort jobs by decreasing value of profit
+  S = MaxPriorityQueue()//by scheduled time
+  for i = 1 to n
+    t = D[i]-1
+    for j = 1 to S.size // in the order of decreasing scheduled time
+      if S[j].time == t
+        t--
+    if t > 0
+      add job i to schedule S with time t
+  return S
+
+(c)
+We assume that jobs have already been sorted by decreasing profits.
+
+Let S_i denote the schedule constructed by the algorithm prior to iteration i. 
+
+Loop invariant: S_i extends to some optimal solution using only jobs from i onwards.
+
+Proof by induction on i:
+Base case: i = 1, then S_i = empty. Clearly, S_i extends to some opt using jobs 1,2,...,n.
+
+IA: assume that S_i extends to some optimal solution S* using only jobs from i onwards.
+
+IS: Consider what our algorithm does with job i.
+
+Case 1: our algorithm doesn't schedule job i. This means that all the time slots prior to D[i] have been taken in S_i. Since S* agrees with S_i, all the time slots prior to D[i] are also taken in S*. Thus job i is not scheduled in S* as well, so S* is an optimal solution that extends S_{i+1}.
+
+Case 2: our algorithm schedules job i at time t <= D[i]-1.
+
+Subcase 1: S* doesn't schedule job i at all. Therefore, it schedules some job j > i at time t. Because j appears after i in the ordering by decreasing profit, we have P[j] <= P[i]. Thus, if we replace j at time t in S* with i at time T, we will get another optimal solution. That optimal solution agrees with S_{i+1}.
+
+Subcase 2: S* schedules job i. If S* schedules i at time t, then there is nothing to prove, as S* agrees with S_{i+1}. Thus assume that S* schedules job i at some time t' != t. Notice that since t was latest available time prior to D[i], and S* agrees with S_i, we must have t' < t.
+
+Subcase 2a: S* doesn't schedule anything at time t. Then we can move job i from time t' to time t in S*, and obtain another opt. That opt agrees with S_{i+1}.
+
+Subcase 2b: Opt schedules some other job j > i at time t. Note that since job j was scheduled at time t > t', its deadline is after t'. Thus, we can swap jobs i and j in S* and obtain another opt. That opt agrees with S_{i+1}.
+
+QED
+
+(d)
+If priority queue is implemented by balanced binary search trees, then the runtime is dominated by two nested for loops. This results in O(n^2) runtime.
