@@ -1,0 +1,24 @@
+Question 4
+
+(a)
+C[i,j] = minimum length of a triangulation of polygon given by vertices in clock-wise order A[i-1], A[i], ..., A[j]
+
+Answer is in C[2,n]
+
+(b)
+
+C[i,j] =   min  { C[i,k] + C[k+1,j]+cost(i-1,k,j) }
+         i<=k<j
+where
+cost(i-1,k,j) = length(A[i-1],A[k]) {if k != i} + length(A[k],A[j]) {if k != j-1}
+
+Base case is C[i,i] = 0
+
+(c)
+Optimal triangulation of polygon A[i-1],...,A[j] has to include the following components:
+  (1) a triangle containing side (A[i-1],A[j]) - by definition of triangulation. This triangle, has A[k] as the vertex opposite the side (A[i-1],A[j]) for some k in {i, i+1, ..., j-1}. Note this triangle splits the original polygon into three parts - the triangle itself, the polygone to one side of the triangle (could be empty), the polygone to the other side of the triangle (could be empty).
+  (2) optimal triangulation of the polygon A[i-1],...,A[k] to the one side of the triangle.
+  (3) optimal triangulation of the polygon A[k],...,A[j] to the other side of the triangle.
+Note that optimal solution to the original problem has to have this structure by the optimal substructure property that can be proved via the standard "cut-and-paste" argument.
+
+(d) Since the computational array has O(n^2) entries and each entry takes O(n) time to fill in, the overall runtime will be O(n^3).
