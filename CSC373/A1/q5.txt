@@ -1,0 +1,26 @@
+Question 5
+
+(a)
+C[i,j] = maximum attainable profit for the chocolate bar of dimensions i x j
+
+(b)
+C[i,j] = max { Expr1, Expr2, Expr 3}, where 0 <= i <= W, 0 <= j <= H and
+
+Expr1 = max { C[i',j]+C[i-i',j] | 1 <= i' < i }
+Expr2 = max { C[i,j']+C[i,j-j'] | 1 <= j' < j }
+Expr3 = max { p_k | (w_k = i and h_k = j) or (w_k = j and h_k = i) } with the standard convention of maximum over the emptyset being 0.
+
+Note that Expr3 = max{ p_k | w_k = i and h_k = j } is also acceptable, since the problem did not specify that tiles are of square shape.
+
+Notice: no base case, because it is included in Expr3.
+
+(c)
+The way of obtaining maximum profit from i x j bar consists of
+  - either taking the whole i x j bar and making a chocolate good of maximum possible profit out of it directly. This is only possible if we have a chocolate good blueprint with the matching dimensions
+  - making a horizontal cut at position i' where 1 <= i' < i and making the maximum possible profit out of the two resulting pieces.
+  - making a vertical cut at position j' where 1 <= j' < j and making the maximum possible profit out of the two resulting pieces.
+This optimal substructure property can be proved by a standard "cut-and-paste" argument.
+
+Our algorithm checks all those possibilities and picks the best one.
+
+(d) The DP table has O(WH) entries, and filling in each entry requires taking a max of three expressions. Expr1 takes O(W) time to fill out, Expr2 takes O(H) time to fill out, and Expr3 takes O(n) time to fill out. Thus, each entry in the array takes O(W+H+n) to fill out. So the overall running time is O(WH(W+H+n)).
