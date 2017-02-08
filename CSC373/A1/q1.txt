@@ -1,0 +1,35 @@
+Question 1
+
+(a) Initialize variable i = 1, keep doubling it until A[i] = infinity. Then binary search for the value of n.
+
+(b)
+
+Find(A)
+  i = 1
+  while A[i] != infinity
+    i = i * 2
+  b = i/2
+  t = i
+  while b < t-1
+    m = floor((b+t)/2)
+    if A[m] = infinity
+      t = m
+    else
+      b = m
+  return b
+
+(c)
+
+1st loop invariant: A[1..i/2] contains only finite elements
+  - at termination: A[1..i/2] contains finite elements but A[i] = infinity. Thus i/2 <= n < i
+
+2nd loop invariant: b <= n < t
+  - at termination b = t-1, thus b <= n < b+1, so n = b.
+
+(d)
+
+First part finds smallest i such that 2^i > n. For such i, we have i = O(log n), which gives the number of times we need to double i, and consequently the number of iterations of the first while loop. Moreover, we perform one array acccess per iteration.
+
+Second part performs binary search on the subarray of length <= 2n, which takes another O(log n) time/accesses of array.
+
+Thus, overall the algorithm takes O(log n) 
